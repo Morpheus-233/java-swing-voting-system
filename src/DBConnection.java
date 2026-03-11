@@ -13,8 +13,8 @@ public class DBConnection {
 
     private static final String URL =
         "jdbc:mysql://localhost:3306/voting_system?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private static final String USER = requireConfig("DB_USER", "db.user");
-    private static final String PASS = requireConfig("DB_PASS", "db.pass");
+    private static final String USER = "root";
+    private static final String PASS = "admin";
 
     static {
         loadMySqlDriver();
@@ -22,22 +22,6 @@ public class DBConnection {
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
-    }
-
-    private static String requireConfig(String envKey, String propertyKey) {
-        String value = System.getenv(envKey);
-        if (value == null || value.isBlank()) {
-            value = System.getProperty(propertyKey);
-        }
-
-        if (value == null || value.isBlank()) {
-            throw new IllegalStateException(
-                "Database credentials must be configured before running. " +
-                "Set " + envKey + " or -D" + propertyKey + "."
-            );
-        }
-
-        return value;
     }
 
     private static void loadMySqlDriver() {
